@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 
 class Formulaire extends Component {
     state = {
-        message: ''
+        message: '',
+        length: this.props.length
     }
 
     createMessage = () => {
@@ -25,7 +26,14 @@ class Formulaire extends Component {
 
     handleChange = event => {
         const message = event.target.value
-        this.setState({message})
+        const length = this.props.length - message.length
+        this.setState({message, length})
+    }
+
+    handleKeyUp = event => {
+        if (event.key === 'Enter') {
+            this.createMessage()
+        }
     }
 
     render() {
@@ -36,11 +44,12 @@ class Formulaire extends Component {
                 <textarea
                     value={this.state.message}
                     onChange={this.handleChange}
+                    onKeyUp={this.handleKeyUp}
                     required
-                    maxLength='140'>
+                    maxLength={this.props.length}>
                 </textarea>
                 <div className='info'>
-                    140
+                    {this.state.length}
                 </div>
                 <button type='submit'>
                     Envoyer !
