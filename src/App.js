@@ -1,9 +1,15 @@
 import React, {Component, createRef} from "react";
 import './App.css';
+import './animations.css';
 import Formulaire from "./components/Formulaire";
 import Message from "./components/Message";
 
 import base from './base'
+
+import {
+    CSSTransition, Transition,
+    TransitionGroup
+} from "react-transition-group";
 
 class App extends Component {
     state = {
@@ -43,20 +49,24 @@ class App extends Component {
         const messages = Object
             .keys(this.state.messages)
             .map(key => (
-                <Message
-                    key={key}
-                    isUser={this.isUser}
-                    pseudo={this.state.messages[key].pseudo}
-                    message={this.state.messages[key].message}/>
+                <CSSTransition
+                    timeout={2000}
+                    classNames='fade'
+                    key={key}>
+                    <Message
+                        isUser={this.isUser}
+                        pseudo={this.state.messages[key].pseudo}
+                        message={this.state.messages[key].message}/>
+                </CSSTransition>
             ))
 
         return (
             <div className="box">
                 <div>
                     <div className="messages" ref={this.messagesRef}>
-                        <div className="message">
+                        <TransitionGroup className="message">
                             {messages}
-                        </div>
+                        </TransitionGroup>
                     </div>
                 </div>
                 <Formulaire
